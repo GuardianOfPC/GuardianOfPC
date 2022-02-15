@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="BanksTests" tests="7" skipped="0" failures="0" errors="0" timestamp="2022-02-15T19:05:58" hostname="GUARDIANOFPC" time="0.033">
+  <properties/>
+  <testcase name="TransferBetweenAccountsAcrossBanksAndCancelTransaction_MoneySentAndReturnedAfterCancel()" classname="BanksTests" time="0.019"/>
+  <testcase name="DebitAccountInterestCalculation_CorrectAmountWithInterest()" classname="BanksTests" time="0.003"/>
+  <testcase name="WithdrawFromSuspiciousDebitAccount_SuspiciousExceptionAsserted()" classname="BanksTests" time="0.002"/>
+  <testcase name="CreditAccountCreditLimitTest_ExceptionCaught()" classname="BanksTests" time="0.002"/>
+  <testcase name="DepositAccountInterestCalculation_CorrectAmountWithInterest()" classname="BanksTests" time="0.002"/>
+  <testcase name="CreditAccountCommissionCalculation_CorrectAmountWithCommission()" classname="BanksTests" time="0.001"/>
+  <testcase name="WithdrawFromDebitAccount_MoneyAddedAndExceptionAsserted()" classname="BanksTests" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
