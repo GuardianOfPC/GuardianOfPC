@@ -1,4 +1,4 @@
-package Models.Enums;
+package Enums;
 
 public enum CatColors
 {
@@ -6,5 +6,6 @@ public enum CatColors
     Grey,
     White,
     Red,
-    Brown
+    Brown,
+    Null
 }

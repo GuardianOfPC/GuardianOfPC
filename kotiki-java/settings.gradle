@@ -1,2 +1,4 @@
 rootProject.name = 'kotiki-java'
+include 'kotiki.Dal'
+include 'kotiki.Service'
 
