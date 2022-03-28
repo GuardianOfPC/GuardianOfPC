@@ -1,5 +1,4 @@
 import Models.Cat;
-import Models.Owner;
 import dao.CatDao;
 import enums.CatColors;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +20,7 @@ class CatServiceTest
     private CatService catService;
 
     public CatServiceTest(){
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         this.catService = new CatService(catDao);
     }
 

@@ -17,7 +17,7 @@ public class OwnerServiceTest
     private OwnerService ownerService;
 
     public OwnerServiceTest(){
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         this.ownerService = new OwnerService(ownerDao);
     }
 
