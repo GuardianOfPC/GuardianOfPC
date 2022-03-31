@@ -1,13 +1,14 @@
 package dao;
 
 import Models.Cat;
+import dao.Base.IDao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateSessionFactoryUtil;
 
 import java.util.List;
 
-public class CatDao
+public class CatDao implements IDao<Cat>
 {
     public Cat findById(int id)
     {

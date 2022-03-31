@@ -1,13 +1,14 @@
 package dao;
 
 import Models.Owner;
+import dao.Base.IDao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateSessionFactoryUtil;
 
 import java.util.List;
 
-public class OwnerDao
+public class OwnerDao implements IDao<Owner>
 {
     public Owner findById(int id) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Owner.class, id);
