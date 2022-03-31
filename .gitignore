@@ -24,7 +24,6 @@ hs_err_pid*
 
 .idea/
 
-.gradle
 **/build/
 !src/**/build/
 
@@ -47,3 +46,5 @@ gradle-app.setting
 .classpath
 /kotiki-java/.gradle/
 /banks-java/.gradle/
+/kotiki-java/kotiki.Dal/build/
+/kotiki-java/kotiki.Service/build/
