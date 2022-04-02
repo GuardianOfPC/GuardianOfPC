@@ -1,6 +1,6 @@
 package dao;
 
-import Models.Owner;
+import models.Owner;
 import dao.Base.IDao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

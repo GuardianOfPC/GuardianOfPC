@@ -1,4 +1,4 @@
-import Models.Cat;
+import models.Cat;
 import dao.CatDao;
 import enums.CatColors;
 import org.junit.jupiter.api.Assertions;

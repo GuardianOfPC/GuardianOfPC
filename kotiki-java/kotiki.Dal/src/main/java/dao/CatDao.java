@@ -1,6 +1,6 @@
 package dao;
 
-import Models.Cat;
+import models.Cat;
 import dao.Base.IDao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

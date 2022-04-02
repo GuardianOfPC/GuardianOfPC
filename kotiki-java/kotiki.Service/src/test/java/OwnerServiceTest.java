@@ -1,4 +1,4 @@
-import Models.Owner;
+import models.Owner;
 import dao.OwnerDao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

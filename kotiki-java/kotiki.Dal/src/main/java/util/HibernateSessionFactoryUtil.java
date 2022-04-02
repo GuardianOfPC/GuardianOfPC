@@ -1,7 +1,7 @@
 package util;
 
-import Models.Cat;
-import Models.Owner;
+import models.Cat;
+import models.Owner;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

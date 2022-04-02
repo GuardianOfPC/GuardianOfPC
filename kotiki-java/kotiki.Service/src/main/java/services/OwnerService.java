@@ -1,7 +1,7 @@
 package services;
 
 import dao.OwnerDao;
-import Models.Owner;
+import models.Owner;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 import enums.CatColors;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "cats")
+@Table(name = "cats", schema = "public")
 public class Cat
 {
         @Id
@@ -31,9 +31,20 @@ public class Cat
         @JoinColumn(name = "owner_id")
         private Owner owner;
 
-        @ManyToMany(fetch = FetchType.LAZY)
-        @JoinColumn(name = "friends_id")
+        @ManyToMany
+        @JoinTable(name = "cats_friends",
+                joinColumns = @JoinColumn(name = "friend_id"),
+                inverseJoinColumns = @JoinColumn(name = "friend_to_id")
+        )
         private List<Cat> friends;
+
+
+        @ManyToMany
+        @JoinTable(name = "cats_friends",
+                joinColumns = @JoinColumn(name = "friend_to_id"),
+                inverseJoinColumns = @JoinColumn(name = "friend_id")
+        )
+        private List<Cat> friendOf;
 
         public Cat(){
         }
@@ -45,6 +56,7 @@ public class Cat
             this.breed = breed;
             this.color = color;
             friends = new ArrayList<>();
+            friendOf = new ArrayList<>();
         }
 
         public Cat(String name, Timestamp dateOfBirth, String breed, CatColors color) {
@@ -53,15 +65,23 @@ public class Cat
             this.breed = breed;
             this.color = color;
             friends = new ArrayList<>();
+            friendOf = new ArrayList<>();
         }
 
         public void addFriend(Cat cat) {
-            cat.addFriend(this);
             friends.add(cat);
+            /*friendOf.add(cat);
+            if (!cat.friendOf.contains(this) && !cat.friends.contains(this)){
+                cat.addFriend(this);
+            }*/
         }
 
         public void removeFriend(Cat cat) {
             friends.remove(cat);
+            friendOf.remove(cat);
+            if (cat.friendOf.contains(this) && cat.friends.contains(this)){
+                cat.removeFriend(this);
+            }
         }
 
         public Integer getId() { return id; }
@@ -88,6 +108,8 @@ public class Cat
             return friends;
         }
 
+        public List<Cat> getFriendOf() { return friendOf; }
+
         public void setId(Integer id) { this.id = id; }
 
         public void setName(String name) {
@@ -110,7 +132,13 @@ public class Cat
             this.owner = owner;
         }
 
-        public void setFriends(ArrayList<Cat> friends) {
+        public void setFriends(List<Cat> friends)
+        {
             this.friends = friends;
+        }
+
+        public void setFriendOf(List<Cat> friendOf)
+        {
+            this.friendOf = friendOf;
         }
 }

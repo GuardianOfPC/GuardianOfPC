@@ -1,7 +1,7 @@
 package services;
 
 import dao.CatDao;
-import Models.Cat;
+import models.Cat;
 
 import java.util.List;
 
