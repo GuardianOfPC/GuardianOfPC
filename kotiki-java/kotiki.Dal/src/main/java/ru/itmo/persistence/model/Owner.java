@@ -1,4 +1,4 @@
-package models;
+package ru.itmo.persistence.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -29,13 +29,13 @@ public class Owner {
             this.id = id;
             this.name = name;
             this.dateOfBirth = dateOfBirth;
-            cats = new ArrayList<Cat>();
+            cats = new ArrayList<>();
         }
 
         public Owner(String name, Timestamp dateOfBirth) {
             this.name = name;
             this.dateOfBirth = dateOfBirth;
-            cats = new ArrayList<Cat>();
+            cats = new ArrayList<>();
         }
 
         public void addCat(Cat cat) {

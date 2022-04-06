@@ -1,6 +1,6 @@
-package models;
+package ru.itmo.persistence.model;
 
-import enums.CatColors;
+import ru.itmo.persistence.model.enums.CatColors;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
