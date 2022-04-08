@@ -1,58 +1,103 @@
 package ru.itmo.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.persistence.model.Owner;
-import ru.itmo.persistence.repo.OwnerRepository;
-import ru.itmo.web.controller.exception.CatIdMismatchException;
-import ru.itmo.web.controller.exception.CatNotFoundException;
+import ru.itmo.web.controller.exception.OwnerIdMissmatchException;
+import ru.itmo.web.controller.exception.OwnerNotFoundException;
+import ru.itmo.web.dto.OwnerDto;
+import ru.itmo.web.service.OwnerService;
+import ru.itmo.web.util.MappingUtil;
+
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/owners")
 public class OwnerController {
 
-    private final OwnerRepository ownerRepository;
+    @Autowired
+    private final OwnerService ownerService;
+    private final MappingUtil mappingUtil = new MappingUtil();
 
-    public OwnerController(OwnerRepository ownerRepository) {
-        this.ownerRepository = ownerRepository;
+    public OwnerController(OwnerService ownerRepository) {
+        this.ownerService = ownerRepository;
     }
 
     @GetMapping
-    public Iterable<Owner> findAll() {
-        return ownerRepository.findAll();
+    public List<OwnerDto> findAll() {
+        List<Owner> owners = ownerService.findAllOwners();
+        return owners.stream()
+                .map(mappingUtil::mapToOwnerDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/name/{ownerName}")
-    public Owner findByName(@PathVariable String ownerName) {
-        return ownerRepository.findByName(ownerName);
+    public List<OwnerDto> findByName(@PathVariable String ownerName) {
+        try {
+            List<Owner> owners = ownerService.findByName(ownerName);
+            return owners.stream()
+                    .map(mappingUtil::mapToOwnerDto)
+                    .collect(Collectors.toList());
+        }
+        catch (OwnerNotFoundException ex) {
+            throw new OwnerNotFoundException(ex);
+        }
     }
 
     @GetMapping("/{id}")
-    public Owner findOne(@PathVariable long id) {
-        return ownerRepository.findById(id)
-                .orElseThrow(CatNotFoundException::new);
+    public OwnerDto findById(@PathVariable int id) {
+        try {
+            return mappingUtil.mapToOwnerDto(ownerService.findOwner(id));
+        }
+        catch (OwnerNotFoundException ex) {
+            throw new OwnerNotFoundException(ex);
+        }
+    }
+
+    @GetMapping("/dateOfBirth/{date}")
+    public List<OwnerDto> findByDateOfBirth(@PathVariable Timestamp date) {
+        try {
+            List<Owner> owners = ownerService.findByDateOfBirth(date);
+            return owners.stream()
+                    .map(mappingUtil::mapToOwnerDto)
+                    .collect(Collectors.toList());
+        }
+        catch (OwnerNotFoundException ex) {
+            throw new OwnerNotFoundException(ex);
+        }
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Owner create(@RequestBody Owner owner) {
-        return ownerRepository.save(owner);
+    public OwnerDto create(@RequestBody OwnerDto owner) {
+        return mappingUtil.mapToOwnerDto(ownerService.saveOwner(mappingUtil.mapToOwnerEntity(owner)));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
-        ownerRepository.findById(id)
-                .orElseThrow(CatNotFoundException::new);
-        ownerRepository.deleteById(id);
+    public void delete(@PathVariable int id) {
+        try {
+            ownerService.findOwner(id);
+        }
+        catch (OwnerNotFoundException ex) {
+            throw new OwnerNotFoundException(ex);
+        }
+        ownerService.deleteById(id);
     }
 
     @PutMapping("/{id}")
-    public Owner updateBook(@RequestBody Owner owner, @PathVariable long id) {
+    public OwnerDto updateOwner(@RequestBody OwnerDto owner, @PathVariable int id) {
         if (owner.getId() != id) {
-            throw new CatIdMismatchException();
+            throw new OwnerIdMissmatchException();
         }
-        ownerRepository.findById(id)
-                .orElseThrow(CatNotFoundException::new);
-        return ownerRepository.save(owner);
+        try {
+            ownerService.findOwner(id);
+        }
+        catch (OwnerNotFoundException ex) {
+            throw new OwnerNotFoundException(ex);
+        }
+        return mappingUtil.mapToOwnerDto(ownerService.saveOwner(mappingUtil.mapToOwnerEntity(owner)));
     }
 }

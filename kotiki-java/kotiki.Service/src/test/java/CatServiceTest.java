@@ -5,29 +5,29 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import ru.itmo.web.service.CatService;
 
 import java.sql.Timestamp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-/*
 class CatServiceTest
 {
-
     @Mock
-    private CatRepository catDao;
+    private CatRepository catRepository;
     private CatService catService;
 
     public CatServiceTest(){
         MockitoAnnotations.openMocks(this);
-        this.catService = new CatService(catDao);
+        this.catService = new CatService(catRepository);
     }
 
     @Test
     void findCat()
     {
-        given(catDao.findById(1)).willReturn(new Cat("Boris", Timestamp.valueOf("2000-11-11 11:11:11"), "Egyptian", CatColors.White));
+        given(catRepository.findById(1)).willReturn(new Cat("Boris", Timestamp.valueOf("2000-11-11 11:11:11"), "Egyptian", CatColors.White));
         Assertions.assertEquals(catService.findCat(1).getName(), "Boris");
     }
 
@@ -36,15 +36,7 @@ class CatServiceTest
     {
         Cat cat = new Cat("Boris", Timestamp.valueOf("2000-11-11 11:11:11"), "Egyptian", CatColors.White);
         catService.saveCat(cat);
-        verify(catDao).save(cat);
-    }
-
-    @Test
-    void updateCat()
-    {
-        Cat cat = new Cat("Boris", Timestamp.valueOf("2000-11-11 11:11:11"), "Egyptian", CatColors.White);
-        catService.updateCat(cat);
-        verify(catDao).update(cat);
+        verify(catRepository).save(cat);
     }
 
     @Test
@@ -52,13 +44,20 @@ class CatServiceTest
     {
         Cat cat = new Cat("Boris", Timestamp.valueOf("2000-11-11 11:11:11"), "Egyptian", CatColors.White);
         catService.deleteCat(cat);
-        verify(catDao).delete(cat);
+        verify(catRepository).delete(cat);
     }
 
     @Test
     void findAllCats()
     {
         catService.findAllCats();
-        verify(catDao).findAll();
+        verify(catRepository).findAll();
     }
-}*/
+
+    @Test
+    void findById()
+    {
+        Cat cat = catService.findCat(75);
+        assertEquals("Alexey",cat.getName());
+    }
+}
