@@ -17,7 +17,7 @@ class CatServiceTest
 {
     @Mock
     private CatRepository catRepository;
-    private CatService catService;
+    private final CatService catService;
 
     public CatServiceTest(){
         MockitoAnnotations.openMocks(this);
@@ -52,12 +52,5 @@ class CatServiceTest
     {
         catService.findAllCats();
         verify(catRepository).findAll();
-    }
-
-    @Test
-    void findById()
-    {
-        Cat cat = catService.findCat(75);
-        assertEquals("Alexey",cat.getName());
     }
 }
