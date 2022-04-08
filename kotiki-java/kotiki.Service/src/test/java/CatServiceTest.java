@@ -1,15 +1,14 @@
-import ru.itmo.persistence.model.Cat;
-import ru.itmo.persistence.repo.CatRepository;
-import ru.itmo.persistence.model.enums.CatColors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import ru.itmo.persistence.model.Cat;
+import ru.itmo.persistence.model.enums.CatColors;
+import ru.itmo.persistence.repo.CatRepository;
 import ru.itmo.web.service.CatService;
 
 import java.sql.Timestamp;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 

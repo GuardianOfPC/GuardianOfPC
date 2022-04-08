@@ -19,7 +19,7 @@ public class Owner {
         @Column(name = "date_of_birth")
         private Timestamp dateOfBirth;
 
-        @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+        @OneToMany(mappedBy = "owner")
         private List<Cat> cats;
 
         public Owner(){

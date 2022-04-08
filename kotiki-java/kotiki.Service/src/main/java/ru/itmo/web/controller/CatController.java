@@ -49,7 +49,7 @@ public class CatController {
         }
     }
 
-    @GetMapping("/getCat/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CatDto> findById(@PathVariable int id) {
         CatDto response = mappingUtil.mapToCatDto(catService.findCat(id));
         return ResponseEntity.ok(response);
