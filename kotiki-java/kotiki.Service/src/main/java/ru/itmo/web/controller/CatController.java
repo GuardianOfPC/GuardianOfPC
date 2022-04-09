@@ -3,6 +3,7 @@ package ru.itmo.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.persistence.model.Cat;
 import ru.itmo.persistence.model.enums.CatColors;
@@ -10,7 +11,7 @@ import ru.itmo.web.controller.exception.CatIdMismatchException;
 import ru.itmo.web.controller.exception.CatNotFoundException;
 import ru.itmo.web.dto.CatDto;
 import ru.itmo.web.service.CatService;
-import ru.itmo.web.util.MappingUtil;
+import ru.itmo.web.util.DtoMappingUtil;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -22,7 +23,8 @@ public class CatController {
 
     @Autowired
     private final CatService catService;
-    private final MappingUtil mappingUtil = new MappingUtil();
+
+    private final DtoMappingUtil mappingUtil = new DtoMappingUtil();
 
     public CatController(CatService catService) {
         this.catService = catService;
@@ -95,12 +97,14 @@ public class CatController {
     }
 
     @PostMapping
+    //@PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public CatDto create(@RequestBody CatDto cat) {
         return mappingUtil.mapToCatDto(catService.saveCat(mappingUtil.mapToCatEntity(cat)));
     }
 
     @DeleteMapping("/{id}")
+    //@PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable int id) {
         try {
             catService.findCat(id);
@@ -112,6 +116,7 @@ public class CatController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public CatDto updateCat(@RequestBody CatDto cat, @PathVariable int id) {
         if (cat.getId() != id) {
             throw new CatIdMismatchException();

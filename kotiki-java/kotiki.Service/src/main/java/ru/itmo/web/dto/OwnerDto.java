@@ -1,6 +1,9 @@
 package ru.itmo.web.dto;
 
+import ru.itmo.persistence.model.Cat;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 public class OwnerDto {
     private Integer id;
@@ -8,6 +11,12 @@ public class OwnerDto {
     private String name;
 
     private Timestamp dateOfBirth;
+
+    private List<Cat> cats;
+
+    public List<Cat> getCats() { return cats; }
+
+    public void setCats(List<Cat> cats) { this.cats = cats; }
 
     public Integer getId() { return id; }
 

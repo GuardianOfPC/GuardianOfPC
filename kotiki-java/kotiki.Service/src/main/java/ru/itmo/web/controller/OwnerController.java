@@ -8,7 +8,7 @@ import ru.itmo.web.controller.exception.OwnerIdMissmatchException;
 import ru.itmo.web.controller.exception.OwnerNotFoundException;
 import ru.itmo.web.dto.OwnerDto;
 import ru.itmo.web.service.OwnerService;
-import ru.itmo.web.util.MappingUtil;
+import ru.itmo.web.util.DtoMappingUtil;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -20,7 +20,7 @@ public class OwnerController {
 
     @Autowired
     private final OwnerService ownerService;
-    private final MappingUtil mappingUtil = new MappingUtil();
+    private final DtoMappingUtil mappingUtil = new DtoMappingUtil();
 
     public OwnerController(OwnerService ownerRepository) {
         this.ownerService = ownerRepository;

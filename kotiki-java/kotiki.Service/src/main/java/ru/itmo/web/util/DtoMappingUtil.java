@@ -5,7 +5,7 @@ import ru.itmo.persistence.model.Owner;
 import ru.itmo.web.dto.CatDto;
 import ru.itmo.web.dto.OwnerDto;
 
-public class MappingUtil {
+public class DtoMappingUtil {
     public CatDto mapToCatDto(Cat cat){
         CatDto dto = new CatDto();
         dto.setId(cat.getId());
@@ -31,6 +31,7 @@ public class MappingUtil {
         dto.setId(owner.getId());
         dto.setName(owner.getName());
         dto.setDateOfBirth(owner.getDateOfBirth());
+        dto.setCats(owner.getCats());
         return dto;
     }
 
@@ -39,6 +40,7 @@ public class MappingUtil {
         owner.setId(ownerDto.getId());
         owner.setName(ownerDto.getName());
         owner.setDateOfBirth(ownerDto.getDateOfBirth());
+        owner.setCats(ownerDto.getCats());
         return owner;
     }
 }

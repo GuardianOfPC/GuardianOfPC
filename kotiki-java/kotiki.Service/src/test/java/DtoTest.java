@@ -2,14 +2,14 @@ import org.junit.jupiter.api.Test;
 import ru.itmo.persistence.model.Cat;
 import ru.itmo.persistence.model.enums.CatColors;
 import ru.itmo.web.dto.CatDto;
-import ru.itmo.web.util.MappingUtil;
+import ru.itmo.web.util.DtoMappingUtil;
 
 import java.sql.Timestamp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DtoTest {
-    private final MappingUtil mappingUtil = new MappingUtil();
+    private final DtoMappingUtil mappingUtil = new DtoMappingUtil();
 
     @Test
     public void whenConvertCatEntityToCatDto_thenCorrect() {

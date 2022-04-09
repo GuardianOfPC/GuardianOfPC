@@ -22,6 +22,10 @@ public class Owner {
         @OneToMany(mappedBy = "owner")
         private List<Cat> cats;
 
+        @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+        @JoinColumn(name = "user_id", referencedColumnName = "id")
+        private User user;
+
         public Owner(){
         }
 
@@ -74,4 +78,8 @@ public class Owner {
         public void setCats(List<Cat> cats) {
             this.cats = cats;
         }
+
+        public User getUser() { return user; }
+
+        public void setUser(User user) { this.user = user; }
 }
