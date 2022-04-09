@@ -31,7 +31,6 @@ public class DtoMappingUtil {
         dto.setId(owner.getId());
         dto.setName(owner.getName());
         dto.setDateOfBirth(owner.getDateOfBirth());
-        dto.setCats(owner.getCats());
         return dto;
     }
 
@@ -40,7 +39,6 @@ public class DtoMappingUtil {
         owner.setId(ownerDto.getId());
         owner.setName(ownerDto.getName());
         owner.setDateOfBirth(ownerDto.getDateOfBirth());
-        owner.setCats(ownerDto.getCats());
         return owner;
     }
 }

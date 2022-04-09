@@ -6,9 +6,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.itmo.persistence.model.Cat;
 import ru.itmo.persistence.model.MyUserDetails;
-import ru.itmo.persistence.model.User;
 import ru.itmo.persistence.model.enums.CatColors;
 import ru.itmo.persistence.repo.CatRepository;
+import ru.itmo.web.controller.exception.UnauthorizedException;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -47,13 +47,13 @@ public class CatService
         Cat cat = catRepository.findById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails currUserDetails = (MyUserDetails) auth.getPrincipal();
-        if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))){
+        if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))){
             return cat;
         }
         if (cat.getOwner().getId().equals(currUserDetails.getUser().getOwner().getId())){
             return cat;
         }
-        return new Cat();
+        throw new UnauthorizedException();
     }
 
     public List<Cat> findByName(String name) {
@@ -79,7 +79,7 @@ public class CatService
     private List<Cat> filterCats(List<Cat> cats) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails currUserDetails = (MyUserDetails) auth.getPrincipal();
-        if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))){
+        if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("admin"))){
             return cats;
         }
         return cats.stream()

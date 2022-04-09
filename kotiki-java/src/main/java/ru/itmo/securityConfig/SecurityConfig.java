@@ -28,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
 
         return authenticationProvider;
     }
@@ -40,18 +40,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic()
+        /*http.httpBasic()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/new").hasAuthority("ADMIN")
+                .antMatchers("/update/**").hasAuthority("ADMIN")
+                .antMatchers("/delete/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .and()
                 .logout().permitAll()
-                ;
-    }
+                ;*/
 
-    /*antMatchers("/create/**").hasAuthority("ADMIN")
-                .antMatchers("/delete/**").hasAuthority("ADMIN")
-                .antMatchers("/edit/**").hasAuthority("ADMIN")*/
+        http.authorizeRequests()
+                .antMatchers("/new").hasAuthority("admin")
+                .antMatchers("/update/**").hasAuthority("admin")
+                .antMatchers("/delete/**").hasAuthority("admin")
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic()
+                .and()
+                .csrf().disable();
+    }
 }

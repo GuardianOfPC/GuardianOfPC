@@ -10,8 +10,9 @@ import java.util.List;
 public class Owner {
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Integer id;
+        @GeneratedValue
+        @JoinColumn(name = "id")
+        private int id;
 
         @Column(name = "name")
         private String name;

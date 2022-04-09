@@ -13,6 +13,9 @@ public class Role {
 
     private String name;
 
+    /*@ManyToMany(mappedBy = "roles")
+    private Set<User> users;*/
+
     public int getId() {
         return id;
     }
@@ -28,4 +31,12 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
+
+    /*public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }*/
 }
