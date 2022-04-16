@@ -5,7 +5,7 @@ import ru.itmo.persistence.model.Owner;
 import ru.itmo.web.dto.CatDto;
 import ru.itmo.web.dto.OwnerDto;
 
-public class MappingUtil {
+public class DtoMappingUtil {
     public CatDto mapToCatDto(Cat cat){
         CatDto dto = new CatDto();
         dto.setId(cat.getId());

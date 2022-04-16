@@ -1,5 +1,6 @@
 package ru.itmo.web.dto;
 
+import ru.itmo.persistence.model.Owner;
 import ru.itmo.persistence.model.enums.CatColors;
 
 import java.sql.Timestamp;

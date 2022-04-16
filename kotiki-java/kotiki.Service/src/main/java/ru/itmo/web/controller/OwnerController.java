@@ -2,13 +2,16 @@ package ru.itmo.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.persistence.model.Owner;
 import ru.itmo.web.controller.exception.OwnerIdMissmatchException;
 import ru.itmo.web.controller.exception.OwnerNotFoundException;
+import ru.itmo.web.controller.exception.UnauthorizedException;
 import ru.itmo.web.dto.OwnerDto;
 import ru.itmo.web.service.OwnerService;
-import ru.itmo.web.util.MappingUtil;
+import ru.itmo.web.util.DtoMappingUtil;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -20,7 +23,8 @@ public class OwnerController {
 
     @Autowired
     private final OwnerService ownerService;
-    private final MappingUtil mappingUtil = new MappingUtil();
+
+    private final DtoMappingUtil mappingUtil = new DtoMappingUtil();
 
     public OwnerController(OwnerService ownerRepository) {
         this.ownerService = ownerRepository;
@@ -70,14 +74,22 @@ public class OwnerController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public OwnerDto create(@RequestBody OwnerDto owner) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("admin"))){
+            throw new UnauthorizedException();
+        }
         return mappingUtil.mapToOwnerDto(ownerService.saveOwner(mappingUtil.mapToOwnerEntity(owner)));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable int id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("admin"))){
+            throw new UnauthorizedException();
+        }
         try {
             ownerService.findOwner(id);
         }
@@ -87,10 +99,14 @@ public class OwnerController {
         ownerService.deleteById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public OwnerDto updateOwner(@RequestBody OwnerDto owner, @PathVariable int id) {
         if (owner.getId() != id) {
-            throw new OwnerIdMissmatchException();
+            throw new UnauthorizedException();
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("admin"))){
+            throw new UnauthorizedException();
         }
         try {
             ownerService.findOwner(id);

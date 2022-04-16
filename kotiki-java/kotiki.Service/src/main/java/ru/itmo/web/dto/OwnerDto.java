@@ -3,7 +3,7 @@ package ru.itmo.web.dto;
 import java.sql.Timestamp;
 
 public class OwnerDto {
-    private Integer id;
+    private int id;
 
     private String name;
 

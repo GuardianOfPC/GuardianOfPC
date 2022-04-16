@@ -27,7 +27,7 @@ public class Cat
         @Enumerated(EnumType.STRING)
         private CatColors color;
 
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "owner_id")
         private Owner owner;
 

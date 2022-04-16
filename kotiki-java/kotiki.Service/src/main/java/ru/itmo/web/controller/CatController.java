@@ -2,15 +2,18 @@ package ru.itmo.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.persistence.model.Cat;
 import ru.itmo.persistence.model.enums.CatColors;
 import ru.itmo.web.controller.exception.CatIdMismatchException;
 import ru.itmo.web.controller.exception.CatNotFoundException;
+import ru.itmo.web.controller.exception.OwnerNotFoundException;
+import ru.itmo.web.controller.exception.UnauthorizedException;
 import ru.itmo.web.dto.CatDto;
 import ru.itmo.web.service.CatService;
-import ru.itmo.web.util.MappingUtil;
+import ru.itmo.web.util.DtoMappingUtil;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -22,7 +25,8 @@ public class CatController {
 
     @Autowired
     private final CatService catService;
-    private final MappingUtil mappingUtil = new MappingUtil();
+
+    private final DtoMappingUtil mappingUtil = new DtoMappingUtil();
 
     public CatController(CatService catService) {
         this.catService = catService;
@@ -50,9 +54,14 @@ public class CatController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CatDto> findById(@PathVariable int id) {
-        CatDto response = mappingUtil.mapToCatDto(catService.findCat(id));
-        return ResponseEntity.ok(response);
+    public CatDto findById(@PathVariable int id) {
+        try {
+            return mappingUtil.mapToCatDto(catService.findCat(id));
+        }
+        catch (OwnerNotFoundException ex) {
+            throw new OwnerNotFoundException(ex);
+        }
+
     }
 
     @GetMapping("/dateOfBirth/{dateOfBirth}")
@@ -94,14 +103,22 @@ public class CatController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public CatDto create(@RequestBody CatDto cat) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("admin"))){
+            throw new UnauthorizedException();
+        }
         return mappingUtil.mapToCatDto(catService.saveCat(mappingUtil.mapToCatEntity(cat)));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable int id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("admin"))){
+            throw new UnauthorizedException();
+        }
         try {
             catService.findCat(id);
         }
@@ -111,13 +128,17 @@ public class CatController {
         catService.deleteById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public CatDto updateCat(@RequestBody CatDto cat, @PathVariable int id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (cat.getId() != id) {
             throw new CatIdMismatchException();
         }
+        if (auth.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals("admin"))){
+            throw new UnauthorizedException();
+        }
         try {
-            catService.findCat(id);
+                catService.findCat(id);
         }
         catch (CatNotFoundException ex){
             throw new CatNotFoundException(ex);
