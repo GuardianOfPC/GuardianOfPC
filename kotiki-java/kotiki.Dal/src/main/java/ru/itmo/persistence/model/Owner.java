@@ -1,4 +1,4 @@
-package models;
+package ru.itmo.persistence.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -19,7 +19,7 @@ public class Owner {
         @Column(name = "date_of_birth")
         private Timestamp dateOfBirth;
 
-        @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+        @OneToMany(mappedBy = "owner")
         private List<Cat> cats;
 
         public Owner(){
@@ -29,13 +29,13 @@ public class Owner {
             this.id = id;
             this.name = name;
             this.dateOfBirth = dateOfBirth;
-            cats = new ArrayList<Cat>();
+            cats = new ArrayList<>();
         }
 
         public Owner(String name, Timestamp dateOfBirth) {
             this.name = name;
             this.dateOfBirth = dateOfBirth;
-            cats = new ArrayList<Cat>();
+            cats = new ArrayList<>();
         }
 
         public void addCat(Cat cat) {

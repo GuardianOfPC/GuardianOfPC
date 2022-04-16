@@ -1,4 +1,4 @@
-package enums;
+package ru.itmo.persistence.model.enums;
 
 public enum CatColors
 {

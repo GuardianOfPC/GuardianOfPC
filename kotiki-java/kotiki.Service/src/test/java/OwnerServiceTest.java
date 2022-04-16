@@ -1,10 +1,11 @@
-import models.Owner;
-import dao.OwnerDao;
+import ru.itmo.persistence.model.Owner;
+import ru.itmo.persistence.repo.OwnerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import services.OwnerService;
+import ru.itmo.web.service.OwnerService;
+
 import java.sql.Timestamp;
 
 import static org.mockito.BDDMockito.given;
@@ -13,18 +14,18 @@ import static org.mockito.BDDMockito.verify;
 public class OwnerServiceTest
 {
     @Mock
-    private OwnerDao ownerDao;
+    private OwnerRepository ownerRepository;
     private OwnerService ownerService;
 
     public OwnerServiceTest(){
         MockitoAnnotations.openMocks(this);
-        this.ownerService = new OwnerService(ownerDao);
+        this.ownerService = new OwnerService(ownerRepository);
     }
 
     @Test
     void findOwner()
     {
-        given(ownerDao.findById(1)).willReturn(new Owner("Alexey", Timestamp.valueOf("2000-11-11 11:11:11")));
+        given(ownerRepository.findById(1)).willReturn(new Owner("Alexey", Timestamp.valueOf("2000-11-11 11:11:11")));
         Assertions.assertEquals(ownerService.findOwner(1).getName(), "Alexey");
     }
 
@@ -33,15 +34,7 @@ public class OwnerServiceTest
     {
         Owner owner = new Owner("Alexey", Timestamp.valueOf("2000-11-11 11:11:11"));
         ownerService.saveOwner(owner);
-        verify(ownerDao).save(owner);
-    }
-
-    @Test
-    void updateOwner()
-    {
-        Owner owner = new Owner("Aboba", Timestamp.valueOf("2000-11-11 11:11:11"));
-        ownerService.updateOwner(owner);
-        verify(ownerDao).update(owner);
+        verify(ownerRepository).save(owner);
     }
 
     @Test
@@ -49,13 +42,13 @@ public class OwnerServiceTest
     {
         Owner owner = new Owner("Aboba", Timestamp.valueOf("2000-11-11 11:11:11"));
         ownerService.deleteOwner(owner);
-        verify(ownerDao).delete(owner);
+        verify(ownerRepository).delete(owner);
     }
 
     @Test
     void findAllOwners()
     {
         ownerService.findAllOwners();
-        verify(ownerDao).findAll();
+        verify(ownerRepository).findAll();
     }
 }
